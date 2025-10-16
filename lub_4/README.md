@@ -1,1 +1,5 @@
 <img width="640" height="480" alt="Сравнение кешированных рекурсивого и теративного факториалов" src="https://github.com/user-attachments/assets/a6b8598f-93ea-4a85-b1ae-4d3b1767f391" />
+
+<img width="640" height="480" alt="Сравление кешированного итеративного и итеративного факторивалов" src="https://github.com/user-attachments/assets/733874b5-ba4c-4c42-93d5-d8d7abf0c1b5" />
+
+<img width="640" height="480" alt="Сравление кешированного рекурсивного и рекурсивного факториалов" src="https://github.com/user-attachments/assets/6aebafa0-31e5-46f0-bb66-7259282637f5" />

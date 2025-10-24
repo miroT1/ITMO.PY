@@ -21,7 +21,7 @@ def gen_bin_tree(height, root, l_b=left, r_b=right):
     l_s = gen_bin_tree(height - 1, left_d, l_b, r_b)
     r_s = gen_bin_tree(height - 1, right_d, l_b, r_b)
     return {root: [l_s, r_s]}
-print (gen_bin_tree(5, 12))
+print (gen_bin_tree(4, 12))
 
 def gen_bee_tree_dict(height, root, l_b=left, r_b=right):
     """Генерирует бинарное дерево в виде словаря.
@@ -36,6 +36,7 @@ def gen_bee_tree_dict(height, root, l_b=left, r_b=right):
     l_s = gen_bee_tree_dict(height - 1, left_d, l_b, r_b)
     r_s = gen_bee_tree_dict(height - 1, right_d, l_b, r_b)
     return {root: {'left': l_s, 'right': r_s}}
+
 
 
 

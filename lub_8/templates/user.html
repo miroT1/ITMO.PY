@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пользователь - CurrenciesListApp</title>
+</head>
+<body>
+    <h1>Информация о пользователе</h1>
+
+    <h2>{{ user.name }}</h2>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+
+    <h3>Подписки на валюты:</h3>
+    {% if subscriptions %}
+    <ul>
+        {% for subscription in subscriptions %}
+        <li>
+            {{ subscription.currency.char_code }}
+            ({{ subscription.currency.name }}):
+            {{ subscription.currency.value }} руб.
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Нет подписок</p>
+    {% endif %}
+
+    <p>Автор: {{author_name}} | Группа: {{author_group}}</p>
+    <a href="/users">Назад к списку пользователей</a>
+</body>
+</html>

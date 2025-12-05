@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Валюты - CurrenciesListApp</title>
+</head>
+<body>
+    <h1>Курсы валют</h1>
+
+    <form method="get" action="/currencies">
+        <button type="submit" name="refresh" value="true">Обновить курсы</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Код</th>
+            <th>Название</th>
+            <th>Цифровой код</th>
+            <th>Курс (руб.)</th>
+            <th>Номинал</th>
+        </tr>
+        {% for currency in currencies %}
+        <tr>
+            <td>{{ currency.char_code }}</td>
+            <td>{{ currency.name }}</td>
+            <td>{{ currency.num_code }}</td>
+            <td>{{ currency.value }}</td>
+            <td>{{ currency.nominal }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>Автор: {{author_name}} | Группа: {{author_group}}</p>
+    <a href="/">На главную</a>
+</body>
+</html>

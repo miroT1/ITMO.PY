@@ -1,0 +1,130 @@
+ОТЧЕТ О 8 ЛАБОРАТОРНОЙ РАБОТЕ
+
+Цель работы - создание клиент-серверного веб приложения для просмотра курсов валют и использованием архитектуры MVC.
+В работе выполнены задачи:
+1 Реализация моделей с геттерами и сеттерами
+2 Создание HTTP сервера с маршрутизацией
+3 Использование Jinja2 для отображение данных
+4 Использоване курсов валют через API Центрального банка России
+5 Тестирование для корректной работы
+
+
+Модели данных:
+1 Author - Автор приложения
+    name - имя автора
+    group - номер группы
+2 App - приложение
+    name - название
+    author - автор
+    version - версия
+3 User - пользователь
+    	id - идентификатор
+	name - имя пользователя
+4 Currency - валюта
+	id - идентификатор
+	name - название валюты
+	num_code - код из цифр
+	char_code - код из символов
+	value - курс
+5 UserCurrency - подписка пользователя
+	id - идентификатор
+	user_id - внешний ключ к пользователю
+	currently_if - внешний ключ к валюте
+
+
+
+Структура проекта
+
+lub8
+	models
+		__init__.py - экспорт всех моделей
+		author.py - класс Author
+		app.py - класс App
+		currency.py - класс Currency
+		user.py - класс User
+		user_currency.py - класс UserCurrency
+	templates
+		author.html - страница об авторе
+		currencies.html - список валют
+		index.html - Главное меню
+		user.html - страница пользователя
+		users.html - список пользователей
+	utils
+		currencies_api.py - функции работы с API валют
+	myapp.py - Основной файл
+
+
+Описание реализации
+1 Реализация моделей и их свойства
+class User:
+    def __init__(self, id: int, name: str):
+        self.__id: int = None
+        self.__name: str = None
+
+        self.id = id #использование сеттора для валидации
+        self.name = name
+
+    @property
+    def id(self):
+        return self.__id
+
+    @id.setter
+    def id(self, id: int):
+        if type(id) is int and id > 0:
+            self.__id = id
+        else:
+            raise ValueError('ERROR')
+
+2 Реализация маршрутов и обработка запросов
+
+class CurrencyRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        parsed_url = urlparse(self.path)
+        path = parsed_url.path
+        query_params = parse_qs(parsed_url.query)
+        
+        if path == '/':
+            '''Обработка главной страницы'''
+        elif path == '/users':
+            '''Обработка списка пользователей'''
+        elif path == '/user':
+            '''Обработка страницы пользователя'''
+            user_id = query_params.get('id', [''])[0]
+        ''' ... другие маршруты'''
+
+3 Использование шаблонизатора Jinja2 
+
+from jinja2 import Environment, PackageLoader, select_autoescape
+
+env = Environment(
+    loader=PackageLoader("myapp"),  # Загрузчик для пакета myapp
+    autoescape=select_autoescape()   # Автоматическое экранирование HTML
+)
+
+* Environment хранится в глобальной переменной для повторного использования
+* PackageLoader загружает шаблоны из папки templates/ пакета myapp
+
+4 Интеграция функции get_currencies для получения актуальных курсов
+def get_currency_details() -> List[Dict]:
+    try:
+        url = "https://www.cbr-xml-daily.ru/daily_json.js"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        currencies_data = data.get('Valute', {})
+        result = []
+        for code, info in currencies_data.items():
+            result.append({
+                'id': info['ID'],
+                'num_code': str(info['NumCode']),
+                'char_code': info['CharCode'],
+                'name': info['Name'],
+                'value': str(info['Value']).replace('.', ','),
+                'nominal': info['Nominal']
+            })
+        return result
+
+
+Примеры задания 
+Главная страница
+

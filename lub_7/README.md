@@ -90,83 +90,109 @@ def solve_quadratic_equation(a: float, b: float, c: float) -> tuple:
 
 
 Фрагменты логов
+
 1 Логирование успешного выполнения
+
 1.1 Получение курсов валют
+
 INFO: Вызываем 'get_currency_rates_with_logging' с аргументами: (['USD'],), {}
 INFO: 'get_currency_rates_with_logging' успешно завершилась, результат: {'USD': 76.97}
+
 1.2 Решение уравнения с двумя корнями
+
 INFO: Вызываем 'solve_quadratic_equation' с аргументами: (1, -5, 6), {}
 INFO: 'solve_quadratic_equation' успешно завершилась, результат: (3.0, 2.0)
 Уравнение x² - 5x + 6 = 0 имеет корни: (3.0, 2.0)
+
 1.3 Решение уравнения не имеющего корней
+
 INFO: Вызываем 'solve_quadratic_equation' с аргументами: (1, 0, 1), {}
 INFO: 'solve_quadratic_equation' успешно завершилась, результат: ()
 Уравнение x² + 1 = 0 имеет корни: ()
+
 2 Логирование ошибок
+
 2.1 Ошибка в уровнении
+
 INFO: Вызываем 'solve_quadratic_equation' с аргументами: (0, 0, 5), {}
 ERROR: 'solve_quadratic_equation' вызвала исключение ValueError: Коофиценты нулевые
 Ошибка при решении: Коофиценты нулевые
+
 3 Файловое логирование
+
 2025-12-04 18:23:38,080 - ???????? 'example_function' ? ???????????: (10,), {}
 2025-12-04 18:23:38,080 - 'example_function' ??????? ???????????, ?????????: 30
 
 
 
 Тесты
+
 1 Тесты функции
+
 1.1 Правильное получение валют
-def test_gets_rates_for_multiple_currencies(self):
-    rates = get_currencies(['USD', 'EUR'])
-    self.assertIsInstance(rates, dict)
-    self.assertIn('USD', rates)
-    self.assertIn('EUR', rates)
-    self.assertIsInstance(rates['USD'], float)
+
+    def test_gets_rates_for_multiple_currencies(self):
+        rates = get_currencies(['USD', 'EUR'])
+        self.assertIsInstance(rates, dict)
+        self.assertIn('USD', rates)
+        self.assertIn('EUR', rates)
+        self.assertIsInstance(rates['USD'], float)
+        
 1.2 Тест на несуществующие данные
-def test_raises_error_for_invalid_currency(self):
-    with self.assertRaises(KeyError):
-        get_currencies(['NONEXISTENT'])
+
+    def test_raises_error_for_invalid_currency(self):
+        with self.assertRaises(KeyError):
+            get_currencies(['NONEXISTENT'])
+        
 2 Тесты декоратора
+
 2.1 Логирование успешного выполнения
-def setUp(self):
-    self.log_output = io.StringIO()
-def test_logs_successful_execution(self):
-    @logger(self.log_output)
-    def multiply_by_two(x):
-        return x * 2
-    result = multiply_by_two(7)
-    logs = self.log_output.getvalue()
-    self.assertEqual(result, 14)
-    self.assertIn("Вызываем 'multiply_by_two'", logs)
-    self.assertIn("успешно завершилась", logs)
+
+    def setUp(self):
+        self.log_output = io.StringIO()
+    def test_logs_successful_execution(self):
+        @logger(self.log_output)
+        def multiply_by_two(x):
+            return x * 2
+        result = multiply_by_two(7)
+        logs = self.log_output.getvalue()
+        self.assertEqual(result, 14)
+        self.assertIn("Вызываем 'multiply_by_two'", logs)
+        self.assertIn("успешно завершилась", logs)
+    
 2.2 Логирование ошибки
-def test_logs_errors_correctly(self):
-    @logger(self.log_output)
-    def failing_function():
-        raise RuntimeError("Что-то пошло не так")
-    with self.assertRaises(RuntimeError):
-        failing_function()
-    logs = self.log_output.getvalue()
-    self.assertIn("ERROR", logs)
-    self.assertIn("RuntimeError", logs)
+
+    def test_logs_errors_correctly(self):
+        @logger(self.log_output)
+        def failing_function():
+            raise RuntimeError("Что-то пошло не так")
+        with self.assertRaises(RuntimeError):
+            failing_function()
+        logs = self.log_output.getvalue()
+        self.assertIn("ERROR", logs)
+        self.assertIn("RuntimeError", logs)
+    
 3 Тесты работы с StringIO
-def setUp(self):
-    self.stream = io.StringIO()
-    @logger(self.stream)
-    def wrapped():
-        return get_currencies(['USD'], api_url="https://invalid")
-    self.wrapped = wrapped
-def test_logging_error(self):
-    with self.assertRaises(ConnectionError):
-        self.wrapped()
-    logs = self.stream.getvalue()
-    self.assertIn("ERROR", logs)
-    self.assertIn("ConnectionError", logs)
+
+    def setUp(self):
+        self.stream = io.StringIO()
+        @logger(self.stream)
+        def wrapped():
+            return get_currencies(['USD'], api_url="https://invalid")
+        self.wrapped = wrapped
+    def test_logging_error(self):
+        with self.assertRaises(ConnectionError):
+            self.wrapped()
+        logs = self.stream.getvalue()
+        self.assertIn("ERROR", logs)
+        self.assertIn("ConnectionError", logs)
 
 
 выполнение тестов
-test_gets_rates_for_multiple_currencies (__main__.TestGetCurrencies.test_gets_rates_for_multiple_currencies) ... ok
-test_raises_error_for_invalid_currency (__main__.TestGetCurrencies.test_raises_error_for_invalid_currency) ... ok
-test_logs_errors_correctly (__main__.LoggingDecoratorTests.test_logs_errors_correctly) ... ok
-test_logs_successful_execution (__main__.LoggingDecoratorTests.test_logs_successful_execution) ... ok
-test_logging_error (__main__.TestStreamWrite.test_logging_error) ... ok
+
+    test_gets_rates_for_multiple_currencies (__main__.TestGetCurrencies.test_gets_rates_for_multiple_currencies) ... ok
+    test_raises_error_for_invalid_currency (__main__.TestGetCurrencies.test_raises_error_for_invalid_currency) ... ok
+    test_logs_errors_correctly (__main__.LoggingDecoratorTests.test_logs_errors_correctly) ... ok
+    test_logs_successful_execution (__main__.LoggingDecoratorTests.test_logs_successful_execution) ... ok
+    test_logging_error (__main__.TestStreamWrite.test_logging_error) ... ok
+

@@ -15,25 +15,26 @@ Author:
 
 
 Структура проекта
-    lub_9
-      controllers
-        __init__.py
-        currencycontroller.py
-        databasecontroller.py
-        pages.py
-      models
-        __init__.py
-        author.py
-        currency.py
-        user.py
-      templates
-        author.html
-        currencies.html
-        index.html
-        user.html
-        users.html
-      tests/
-      myapp.py
+
+        lub_9
+          controllers
+            __init__.py
+            currencycontroller.py
+            databasecontroller.py
+            pages.py
+          models
+            __init__.py
+            author.py
+            currency.py
+            user.py
+          templates
+            author.html
+            currencies.html
+            index.html
+            user.html
+            users.html
+          tests/
+          myapp.py
 
 
 Реализация CRUD с примерами SQL-запросов

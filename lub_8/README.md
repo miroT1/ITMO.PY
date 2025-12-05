@@ -60,20 +60,18 @@ class User:
     def __init__(self, id: int, name: str):
         self.__id: int = None
         self.__name: str = None
-
         self.id = id #использование сеттора для валидации
         self.name = name
-
     @property
     def id(self):
         return self.__id
-
     @id.setter
     def id(self, id: int):
         if type(id) is int and id > 0:
             self.__id = id
         else:
             raise ValueError('ERROR')
+
 
 2 Реализация маршрутов и обработка запросов
 
@@ -82,7 +80,6 @@ class CurrencyRequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         path = parsed_url.path
         query_params = parse_qs(parsed_url.query)
-        
         if path == '/':
             '''Обработка главной страницы'''
         elif path == '/users':
@@ -90,7 +87,8 @@ class CurrencyRequestHandler(BaseHTTPRequestHandler):
         elif path == '/user':
             '''Обработка страницы пользователя'''
             user_id = query_params.get('id', [''])[0]
-        ''' ... другие маршруты'''
+        ''' другие маршруты'''
+
 
 3 Использование шаблонизатора Jinja2 
 
@@ -143,7 +141,9 @@ def get_currency_details() -> List[Dict]:
 
 
 Тестирование
+
 1 Тестирование моделей
+
 def test_user_creation_valid(self):
     """Тест создания пользователя с валидными данными"""
     user = User(1, "Иван Иванов")
@@ -161,6 +161,7 @@ def test_user_id_validation(self):
         user.id = -1
 
 2 Тестирование функции get_currencies
+
 @patch('utils.currencies_api.requests.get')
 def test_get_currencies_success(self, mock_get):
     mock_response = Mock()
@@ -183,6 +184,7 @@ def test_get_currencies_success(self, mock_get):
     self.assertEqual(str(currencies['USD']), '91.2345')
 
 3 Тестирование контроллера
+
 def test_handle_index(self):
     self.handler._handle_index()
     self.assertEqual(self.handler.response_code, 200)
@@ -194,6 +196,7 @@ def test_handle_user_detail_valid(self):
     handler._handle_user_detail('1')
 
 Результаты тестирования
+
 test_user_creation_valid ... ok
 test_user_id_validation ... ok
 test_get_currencies_success ... ok

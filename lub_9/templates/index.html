@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ myapp }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>{{ myapp }}</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Автор проекта: {{ author_name }}</h5>
+                <p class="card-text">Группа: {{ author_group }}</p>
+            </div>
+        </div>
+
+        <ul id="navigation" class="nav nav-pills mb-4">
+            {% for item in navigation %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ item.href }}">{{ item.caption }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if user_currencies %}
+        <h3>Ваши отслеживаемые валюты:</h3>
+        <table class="table table-striped mb-4">
+            <thead>
+                <tr>
+                    <th>Код</th>
+                    <th>Название</th>
+                    <th>Курс</th>
+                    <th>Номинал</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in user_currencies %}
+                <tr>
+                    <td>{{ item.char_code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.value }}</td>
+                    <td>{{ item.nominal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <h3>Все валюты:</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Код</th>
+                    <th>Название</th>
+                    <th>Курс</th>
+                    <th>Номинал</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in currencies %}
+                <tr>
+                    <td>{{ item.char_code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.value }}</td>
+                    <td>{{ item.nominal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if result %}
+        <div class="alert alert-info mt-3">
+            {{ result }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
